@@ -1,15 +1,22 @@
 package org.launchcode.codingevents.models;
 
-import javax.validation.constraints.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 /**
  * Created by Chris Bay
  */
+@Entity
 public class Event {
 
+    @Id
+    @GeneratedValue
     private int id;
-    private static int nextId = 1;
 
     @NotBlank(message = "Name is required")
     @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
@@ -18,54 +25,20 @@ public class Event {
     @Size(max = 500, message = "Description too long!")
     private String description;
 
-    @NotBlank(message = "Location is required.")
-    private String location;
-
-    @AssertTrue(message = "Registration is required.")
-    private boolean mustRegister;
-
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email. Try again.")
     private String contactEmail;
 
-    @Positive(message = "At lease one attendee required.")
-    private int numberOfAttendees;
+    private EventType type;
 
-    public Event(String name, String description, String contactEmail) {
-        this();
+    public Event(String name, String description, String contactEmail, EventType type) {
         this.name = name;
         this.description = description;
         this.contactEmail = contactEmail;
+        this.type = type;
     }
 
-    public Event() {
-        this.id = nextId;
-        nextId++;
-    }
-
-    public String getLocation(){
-        return this.location;
-    }
-
-    public void setLocation(){
-        this.location = location;
-    }
-
-    public boolean getMustRegister(){
-        return mustRegister;
-    }
-
-    public void setMustRegister(boolean mustRegister){
-        this.mustRegister = mustRegister;
-    }
-
-    public int getNumberOfAttendees() {
-        return numberOfAttendees;
-    }
-
-    public void setNumberOfAttendees(int numberOfAttendees) {
-        this.numberOfAttendees = numberOfAttendees;
-    }
+    public Event() {}
 
     public String getName() {
         return name;
@@ -89,6 +62,14 @@ public class Event {
 
     public void setContactEmail(String contactEmail) {
         this.contactEmail = contactEmail;
+    }
+
+    public EventType getType() {
+        return type;
+    }
+
+    public void setType(EventType type) {
+        this.type = type;
     }
 
     public int getId() {
