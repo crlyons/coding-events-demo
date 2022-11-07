@@ -32,7 +32,14 @@ public class EventController {
             model.addAttribute("title", "All Events");
             model.addAttribute("events", eventRepository.findAll());
         } else{
-            eventCategoryRepository.findById(categoryId);
+           Optional<EventCategory> result = eventCategoryRepository.findById(categoryId);
+           if (result.isEmpty()){
+               model.addAttribute("title", "Invalid Category ID: " + categoryId);
+           } else {
+               EventCategory category = result.get();
+               model.addAttribute("title", "Events in Category: " + category.getName());
+               model.addAttribute("events", category.getEvents());
+           }
         }
         return "events/index";
     }
